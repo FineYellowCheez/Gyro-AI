@@ -6,11 +6,12 @@
     <title>Gyro AI</title>
     <style>
         :root {
-            --bg-color: #0b0c10;
-            --glass-bg: rgba(31, 40, 51, 0.6);
-            --glass-border: rgba(102, 252, 241, 0.2);
-            --neon-cyan: #66fcf1;
-            --neon-blue: #45a29e;
+            --bg-color: #050608;
+            --glass-bg: rgba(20, 25, 30, 0.7);
+            --glass-border: rgba(102, 252, 241, 0.15);
+            --neon-cyan: #00f2fe;
+            --neon-purple: #8a2be2;
+            --neon-magenta: #ff00ff;
             --text-main: #c5c6c7;
             --text-light: #ffffff;
         }
@@ -24,7 +25,7 @@
 
         body {
             background-color: var(--bg-color);
-            background-image: radial-gradient(circle at 50% 0%, #1f2833 0%, #0b0c10 70%);
+            background-image: radial-gradient(circle at 50% 0%, #1a1c23 0%, #050608 80%);
             color: var(--text-main);
             height: 100vh;
             display: flex;
@@ -39,22 +40,22 @@
             align-items: center;
             padding: 15px 30px;
             background: var(--glass-bg);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--glass-border);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
             z-index: 10;
         }
 
         .header-title {
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-size: 1.5rem;
-            font-weight: bold;
+            gap: 20px;
+            font-size: 1.8rem;
+            font-weight: 900;
             color: var(--text-light);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--neon-cyan);
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px var(--neon-cyan), 0 0 30px var(--neon-purple);
         }
 
         .api-key-container {
@@ -63,35 +64,39 @@
         }
 
         .api-key-container input {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--glass-border);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(102, 252, 241, 0.3);
+            color: var(--neon-cyan);
+            padding: 10px 20px;
+            border-radius: 25px;
             outline: none;
+            width: 300px;
+            font-family: monospace;
             transition: all 0.3s ease;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
         }
 
         .api-key-container input:focus {
             border-color: var(--neon-cyan);
-            box-shadow: 0 0 10px rgba(102, 252, 241, 0.3);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4), inset 0 0 10px rgba(0, 242, 254, 0.2);
+            color: white;
         }
 
         main {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
+            padding: 30px;
             display: flex;
             flex-direction: column;
             scroll-behavior: smooth;
         }
 
         main::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
         main::-webkit-scrollbar-thumb {
-            background: var(--neon-blue);
-            border-radius: 4px;
+            background: var(--neon-purple);
+            border-radius: 10px;
         }
 
         /* --- Welcome Screen --- */
@@ -105,21 +110,28 @@
         }
 
         .welcome-text {
-            margin-top: 30px;
-            font-size: 2rem;
+            margin-top: 50px;
+            font-size: 2.2rem;
+            font-weight: bold;
             color: var(--text-light);
-            text-shadow: 0 0 15px var(--neon-blue);
-            letter-spacing: 1px;
+            text-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-purple);
+            letter-spacing: 2px;
+            animation: text-pulse 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes text-pulse {
+            0% { opacity: 0.8; text-shadow: 0 0 15px var(--neon-cyan); }
+            100% { opacity: 1; text-shadow: 0 0 25px var(--neon-cyan), 0 0 50px var(--neon-purple); }
         }
 
         /* --- Chat Messages --- */
         .message-row {
             display: flex;
-            margin-bottom: 20px;
-            max-width: 80%;
+            margin-bottom: 25px;
+            max-width: 85%;
             animation: fadeIn 0.4s ease forwards;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(15px);
         }
 
         @keyframes fadeIn {
@@ -136,156 +148,197 @@
         }
 
         .avatar {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 15px;
+            margin: 0 20px;
         }
 
         .user-avatar {
-            background: linear-gradient(135deg, var(--neon-blue), #8a2be2);
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-magenta));
             border-radius: 50%;
             color: white;
             font-weight: bold;
-            font-size: 1.2rem;
-            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+            font-size: 1.5rem;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+            border: 2px solid rgba(255,255,255,0.2);
         }
 
         .bubble {
             background: var(--glass-bg);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
-            padding: 15px 20px;
-            border-radius: 20px;
+            padding: 18px 25px;
+            border-radius: 25px;
             color: var(--text-light);
-            line-height: 1.5;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            line-height: 1.6;
+            font-size: 1.05rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             white-space: pre-wrap;
+            position: relative;
+            overflow: hidden;
         }
 
         .message-row.user .bubble {
-            border-bottom-right-radius: 0;
-            background: rgba(69, 162, 158, 0.15);
-            border-color: rgba(69, 162, 158, 0.4);
+            border-bottom-right-radius: 5px;
+            background: rgba(138, 43, 226, 0.15);
+            border-color: rgba(138, 43, 226, 0.4);
         }
 
         .message-row.gyro .bubble {
-            border-bottom-left-radius: 0;
-            background: rgba(31, 40, 51, 0.8);
-            border-color: rgba(102, 252, 241, 0.3);
+            border-bottom-left-radius: 5px;
+            background: rgba(0, 242, 254, 0.05);
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 0 20px rgba(0, 242, 254, 0.05);
         }
 
         /* --- Input Area --- */
         .input-area {
-            padding: 20px 30px;
+            padding: 25px 40px;
             background: var(--glass-bg);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             border-top: 1px solid var(--glass-border);
             display: flex;
-            gap: 15px;
+            gap: 20px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
         }
 
         .input-area textarea {
             flex: 1;
-            background: rgba(0,0,0,0.4);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 15px;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 18px;
             color: white;
-            font-size: 1rem;
+            font-size: 1.1rem;
             resize: none;
             outline: none;
-            height: 60px;
-            transition: border-color 0.3s ease;
+            height: 65px;
+            transition: all 0.3s ease;
         }
 
         .input-area textarea:focus {
             border-color: var(--neon-cyan);
-            box-shadow: inset 0 0 10px rgba(102, 252, 241, 0.1);
+            box-shadow: inset 0 0 15px rgba(0, 242, 254, 0.15), 0 0 10px rgba(0, 242, 254, 0.2);
         }
 
         .send-btn {
             background: transparent;
             border: 2px solid var(--neon-cyan);
             color: var(--neon-cyan);
-            border-radius: 15px;
-            padding: 0 30px;
-            font-size: 1.1rem;
-            font-weight: bold;
+            border-radius: 20px;
+            padding: 0 40px;
+            font-size: 1.2rem;
+            font-weight: 900;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px var(--neon-cyan);
+            box-shadow: inset 0 0 10px rgba(0, 242, 254, 0.1);
         }
 
         .send-btn:hover {
             background: var(--neon-cyan);
             color: var(--bg-color);
-            box-shadow: 0 0 20px var(--neon-cyan);
+            box-shadow: 0 0 30px var(--neon-cyan), 0 0 60px var(--neon-cyan);
+            text-shadow: none;
+            transform: scale(1.05);
         }
 
-        /* --- GYRO LOGO ANIMATION (The cool part!) --- */
+        /* --- THE UPGRADED QUANTUM GYRO LOGO --- */
+        .gyro-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px;
+        }
+
         .gyro-logo {
             position: relative;
             transform-style: preserve-3d;
-            animation: rotate-core 6s linear infinite;
+            animation: hover-float 4s ease-in-out infinite;
         }
 
-        .size-lg { width: 150px; height: 150px; }
-        .size-sm { width: 40px; height: 40px; }
+        .size-lg { width: 220px; height: 220px; }
+        .size-sm { width: 55px; height: 55px; }
 
         .ring {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             border-radius: 50%;
-            border: solid transparent;
+            transform-style: preserve-3d;
         }
 
-        .size-lg .ring { border-width: 4px; }
-        .size-sm .ring { border-width: 2px; }
-
+        /* Ring 1: Inner Cyan Spin */
         .ring-1 {
-            border-top-color: var(--neon-cyan);
-            border-bottom-color: var(--neon-cyan);
+            border: 3px solid var(--neon-cyan);
+            box-shadow: 0 0 20px var(--neon-cyan), inset 0 0 20px var(--neon-cyan);
             animation: spin-x 3s linear infinite;
         }
+        .size-lg .ring-1 { border-width: 6px; }
 
+        /* Ring 2: Purple Cross Spin */
         .ring-2 {
-            border-left-color: #8a2be2;
-            border-right-color: #8a2be2;
+            border: 3px solid var(--neon-purple);
+            box-shadow: 0 0 25px var(--neon-purple), inset 0 0 25px var(--neon-purple);
             animation: spin-y 4s linear infinite;
         }
+        .size-lg .ring-2 { border-width: 6px; }
 
+        /* Ring 3: Magenta Diagonal */
         .ring-3 {
-            border-top-color: var(--neon-blue);
-            border-bottom-color: var(--neon-blue);
-            animation: spin-z 5s linear infinite;
+            border: 2px dashed var(--neon-magenta);
+            box-shadow: 0 0 15px var(--neon-magenta);
+            animation: spin-z 6s linear infinite;
         }
+        .size-lg .ring-3 { border-width: 4px; }
 
+        /* Ring 4: Outer Reverse Orbit */
+        .ring-4 {
+            border: 2px dotted rgba(255, 255, 255, 0.6);
+            animation: spin-outer 10s linear infinite reverse;
+        }
+        .size-lg .ring-4 { border-width: 4px; }
+
+        /* The Quantum Core */
         .core {
             position: absolute;
-            top: 40%; left: 40%; right: 40%; bottom: 40%;
-            background: var(--neon-cyan);
+            top: 38%; left: 38%; right: 38%; bottom: 38%;
+            background: #ffffff;
             border-radius: 50%;
-            box-shadow: 0 0 20px var(--neon-cyan), 0 0 40px #8a2be2;
-            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 20px #fff, 0 0 50px var(--neon-cyan), 0 0 80px var(--neon-purple);
+            animation: core-pulse 1.2s ease-in-out infinite alternate;
         }
 
-        @keyframes rotate-core { 0% { transform: rotate3d(1, 1, 1, 0deg); } 100% { transform: rotate3d(1, 1, 1, 360deg); } }
-        @keyframes spin-x { 0% { transform: rotateX(0deg); } 100% { transform: rotateX(360deg); } }
-        @keyframes spin-y { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
-        @keyframes spin-z { 0% { transform: rotateZ(0deg); } 100% { transform: rotateZ(360deg); } }
-        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.5); opacity: 1; box-shadow: 0 0 30px var(--neon-cyan), 0 0 60px #8a2be2; } }
+        @keyframes hover-float {
+            0%, 100% { transform: translateY(0) rotateX(10deg); }
+            50% { transform: translateY(-15px) rotateX(0deg); }
+        }
+        @keyframes spin-x { 0% { transform: rotateX(0deg) rotateY(60deg); } 100% { transform: rotateX(360deg) rotateY(60deg); } }
+        @keyframes spin-y { 0% { transform: rotateY(0deg) rotateX(60deg); } 100% { transform: rotateY(360deg) rotateX(60deg); } }
+        @keyframes spin-z { 0% { transform: rotateZ(0deg) rotateX(45deg) rotateY(45deg); } 100% { transform: rotateZ(360deg) rotateX(45deg) rotateY(45deg); } }
+        @keyframes spin-outer { 0% { transform: scale(1.35) rotate3d(1, 1, 1, 0deg); } 100% { transform: scale(1.35) rotate3d(1, 1, 1, 360deg); } }
+        
+        @keyframes core-pulse { 
+            0% { transform: scale(0.6); opacity: 0.9; box-shadow: 0 0 10px #fff, 0 0 30px var(--neon-cyan); } 
+            100% { transform: scale(1.4); opacity: 1; box-shadow: 0 0 30px #fff, 0 0 80px var(--neon-cyan), 0 0 120px var(--neon-purple); } 
+        }
 
         /* Loader */
         .typing-indicator {
-            color: var(--neon-blue);
+            color: var(--neon-cyan);
             font-style: italic;
-            font-size: 0.9rem;
-            margin-top: 5px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            animation: pulse-opacity 1s infinite alternate;
+        }
+        @keyframes pulse-opacity {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
         }
     </style>
 </head>
@@ -293,28 +346,34 @@
 
     <header>
         <div class="header-title">
-            <div class="gyro-logo size-sm">
-                <div class="ring ring-1"></div>
-                <div class="ring ring-2"></div>
-                <div class="ring ring-3"></div>
-                <div class="core"></div>
+            <div class="gyro-wrapper">
+                <div class="gyro-logo size-sm">
+                    <div class="ring ring-1"></div>
+                    <div class="ring ring-2"></div>
+                    <div class="ring ring-3"></div>
+                    <div class="ring ring-4"></div>
+                    <div class="core"></div>
+                </div>
             </div>
-            GYRO AI
+            GYRO
         </div>
         <div class="api-key-container">
-            <input type="password" id="api-key" placeholder="Enter Groq API Key here..." autocomplete="off">
+            <input type="text" id="api-key" placeholder="Paste Groq API Key here..." autocomplete="off">
         </div>
     </header>
 
     <main id="chat-container">
         <div id="welcome-screen">
-            <div class="gyro-logo size-lg">
-                <div class="ring ring-1"></div>
-                <div class="ring ring-2"></div>
-                <div class="ring ring-3"></div>
-                <div class="core"></div>
+            <div class="gyro-wrapper">
+                <div class="gyro-logo size-lg">
+                    <div class="ring ring-1"></div>
+                    <div class="ring ring-2"></div>
+                    <div class="ring ring-3"></div>
+                    <div class="ring ring-4"></div>
+                    <div class="core"></div>
+                </div>
             </div>
-            <div class="welcome-text">I am Gyro. How can I assist you?</div>
+            <div class="welcome-text">SYSTEM ONLINE. I AM GYRO.</div>
         </div>
     </main>
 
@@ -344,11 +403,14 @@
             
             if (sender === 'gyro') {
                 avatar.innerHTML = `
-                    <div class="gyro-logo size-sm">
-                        <div class="ring ring-1"></div>
-                        <div class="ring ring-2"></div>
-                        <div class="ring ring-3"></div>
-                        <div class="core"></div>
+                    <div class="gyro-wrapper">
+                        <div class="gyro-logo size-sm">
+                            <div class="ring ring-1"></div>
+                            <div class="ring ring-2"></div>
+                            <div class="ring ring-3"></div>
+                            <div class="ring ring-4"></div>
+                            <div class="core"></div>
+                        </div>
                     </div>
                 `;
             } else {
@@ -375,7 +437,7 @@
             if (!text) return;
             
             if (!apiKey) {
-                alert("Please enter your Groq API Key in the top right corner first!");
+                alert("Please paste your Groq API Key in the top right box first!");
                 return;
             }
 
@@ -394,7 +456,7 @@
 
             // Add loading indicator
             const loadingId = 'loading-' + Date.now();
-            const loadingElement = createMessageElement('Thinking...', 'gyro');
+            const loadingElement = createMessageElement('PROCESSING DATA...', 'gyro');
             loadingElement.id = loadingId;
             loadingElement.querySelector('.bubble').classList.add('typing-indicator');
             chatContainer.appendChild(loadingElement);
@@ -409,7 +471,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: "llama3-8b-8192", // Fast, powerful model on Groq
+                        model: "llama3-8b-8192", 
                         messages: messages,
                         temperature: 0.7
                     })
@@ -433,8 +495,8 @@
                 
             } catch (error) {
                 document.getElementById(loadingId).remove();
-                const errorElement = createMessageElement(`Error: ${error.message}`, 'gyro');
-                errorElement.querySelector('.bubble').style.color = '#ff4a4a';
+                const errorElement = createMessageElement(`SYSTEM ERROR: ${error.message}`, 'gyro');
+                errorElement.querySelector('.bubble').style.color = '#ff00ff';
                 chatContainer.appendChild(errorElement);
             }
 
