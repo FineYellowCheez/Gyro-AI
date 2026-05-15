@@ -37,7 +37,7 @@
         main {
             flex: 1;
             overflow-y: auto;
-            padding: 40px 20px 120px 20px; /* Extra bottom padding for floating input */
+            padding: 40px 20px 120px 20px; 
             display: flex;
             flex-direction: column;
             scroll-behavior: smooth;
@@ -104,16 +104,17 @@
             line-height: 1.5;
             max-width: 80%;
             color: var(--text-primary);
+            white-space: pre-wrap; /* Ensures line breaks show properly */
         }
 
-        /* AI Text Area (No bubble, just text) */
+        /* AI Text Area */
         .ai-text {
             padding-top: 5px;
             font-size: 1rem;
             line-height: 1.6;
             color: var(--text-primary);
             width: calc(100% - 50px);
-            white-space: pre-wrap;
+            white-space: pre-wrap; /* Ensures line breaks show properly */
         }
 
         /* --- Input Area --- */
@@ -285,12 +286,12 @@
             }
         }
 
-        function createMessageElement(text, sender) {
+        // --- BUG FIX: THIS FUNCTION NOW SAFELY INJECTS TEXT ---
+        function createMessageElement(text, sender, isHTML = false) {
             const row = document.createElement('div');
             row.className = `message-row ${sender}`;
 
             if (sender === 'ai') {
-                // AI gets the DataStream logo next to raw text
                 row.innerHTML = `
                     <div class="logo-box size-sm">
                         <div class="datastream">
@@ -300,11 +301,17 @@
                             <div class="data-line"></div>
                         </div>
                     </div>
-                    <div class="ai-text">${text}</div>
+                    <div class="ai-text"></div>
                 `;
+                // If it's the loading indicator, allow HTML. Otherwise, safely inject text.
+                if (isHTML) {
+                    row.querySelector('.ai-text').innerHTML = text;
+                } else {
+                    row.querySelector('.ai-text').innerText = text;
+                }
             } else {
-                // User gets a soft gray bubble
-                row.innerHTML = `<div class="user-bubble">${text}</div>`;
+                row.innerHTML = `<div class="user-bubble"></div>`;
+                row.querySelector('.user-bubble').innerText = text;
             }
 
             return row;
@@ -335,9 +342,9 @@
             sendBtn.classList.remove('active');
             chatWrapper.scrollTop = chatWrapper.scrollHeight;
 
-            // Loading Indicator
+            // Loading Indicator (we pass 'true' to allow the span HTML to render)
             const loadingId = 'loading-' + Date.now();
-            const loadingElement = createMessageElement('<span class="typing-indicator">Generating response...</span>', 'ai');
+            const loadingElement = createMessageElement('<span class="typing-indicator">Generating response...</span>', 'ai', true);
             loadingElement.id = loadingId;
             chatContainer.appendChild(loadingElement);
             chatWrapper.scrollTop = chatWrapper.scrollHeight;
@@ -367,13 +374,13 @@
                 const aiReply = data.choices[0].message.content;
                 messages.push({ role: "assistant", content: aiReply });
 
-                // AI Message
+                // AI Message (safely injected as text)
                 const aiMsgElement = createMessageElement(aiReply, 'ai');
                 chatContainer.appendChild(aiMsgElement);
                 
             } catch (error) {
                 document.getElementById(loadingId).remove();
-                const errorElement = createMessageElement(`<span style="color: #ff6b6b;">Error: ${error.message}</span>`, 'ai');
+                const errorElement = createMessageElement(`<span style="color: #ff6b6b;">Error: ${error.message}</span>`, 'ai', true);
                 chatContainer.appendChild(errorElement);
             }
 
